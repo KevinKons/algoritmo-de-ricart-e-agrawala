@@ -1,5 +1,7 @@
 package model;
 
+import utils.CloseConnection;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,16 +17,21 @@ public class SendIsAlive {
     }
 
     public int send(String myIp) {
+        Socket conn = null;
+        PrintWriter out = null;
+        BufferedReader in = null;
         try {
-            Socket conn = new Socket(serverIp, 56000);
-            PrintWriter out = new PrintWriter(conn.getOutputStream(), true);
+            conn = new Socket(serverIp, 56000);
+            out = new PrintWriter(conn.getOutputStream(), true);
             out.println("1");
             out.println(myIp);
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             return Integer.parseInt(in.readLine());
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            CloseConnection.getInstance().close(in, out, conn);
         }
         return Integer.parseInt(null);
     }

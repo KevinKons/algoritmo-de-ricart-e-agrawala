@@ -1,7 +1,5 @@
 package model;
 
-import controller.ReceiverRequestCommandInvoker;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -9,8 +7,8 @@ import java.net.Socket;
 public class Server extends Thread {
 
     private ServerSocket server;
-    private ReceiverRequestCommandInvoker receiverRequestCI = ReceiverRequestCommandInvoker.getInstance();
     private int port;
+    private Client client;
 
     @Override
     public void run() {
@@ -20,7 +18,7 @@ public class Server extends Thread {
             while(true) {
                 System.out.println("Waiting connection");
                 Socket conn = server.accept();
-                receiverRequestCI.execute(conn);
+                client.getState().respondRequest(conn);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -30,5 +28,8 @@ public class Server extends Thread {
 
     public void setPort(int port) {
         this.port = port;
+    }
+    public void setClient(Client client) {
+        this.client = client;
     }
 }

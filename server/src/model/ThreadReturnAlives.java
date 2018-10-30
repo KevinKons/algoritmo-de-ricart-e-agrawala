@@ -21,7 +21,7 @@ public class ThreadReturnAlives extends Thread {
         try {
             out = new PrintWriter(conn.getOutputStream(), true);
             for(Client c : ClientList.getInstance().getClients()) {
-                out.println(c.getIp() + ";" + c.getPort());
+                out.println(c.getIp() + ":" + c.getPort());
             }
         } catch (IOException e) {
             e.printStackTrace();

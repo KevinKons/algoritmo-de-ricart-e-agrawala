@@ -1,4 +1,8 @@
-package model;
+package model.state;
+
+import model.Client;
+
+import java.net.Socket;
 
 public abstract class State {
 
@@ -9,5 +13,5 @@ public abstract class State {
     }
 
     public abstract void nextState();
-    public abstract boolean respondRequest();
+    public abstract void respondRequest(Socket conn);
 }
