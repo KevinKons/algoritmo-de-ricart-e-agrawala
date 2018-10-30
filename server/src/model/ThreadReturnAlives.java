@@ -2,7 +2,7 @@ package model;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 public class ThreadReturnAlives extends Thread {
@@ -17,21 +17,16 @@ public class ThreadReturnAlives extends Thread {
 
     @Override
     public void run() {
-        ObjectOutputStream out = null;
+        PrintWriter out = null;
         try {
-            out = new ObjectOutputStream(conn.getOutputStream());
-            out.writeObject(ClientList.getInstance());
+            out = new PrintWriter(conn.getOutputStream(), true);
+            for(Client c : ClientList.getInstance().getClients()) {
+                out.println(c.getIp() + ";" + c.getPort());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            try {
-                if (in != null) in.close();
-                if (out != null) out.close();
-                if (conn != null) conn.close();
-            } catch (IOException e) {
-                System.out.println("Error on closing input stream, output stream or socket");
-                e.printStackTrace();
-            }
+            new CloseConnection().close(in, out, conn);
         }
     }
 }
