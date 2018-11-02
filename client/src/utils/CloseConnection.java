@@ -16,13 +16,24 @@ public class CloseConnection {
         return instance;
     }
 
-    public void close(Reader in, Writer out, Socket conn) {
+    public void closeAll(Reader in, Writer out, Socket conn) {
         try {
             if (in != null) in.close();
             if (out != null) out.close();
             if (conn != null) conn.close();
         } catch (IOException e) {
             System.out.println("Error on closing input stream, output stream or socket");
+            e.printStackTrace();
+        }
+    }
+
+
+    public void closeInAndOut(Reader in, Writer out) {
+        try {
+            if (in != null) in.close();
+            if (out != null) out.close();
+        } catch (IOException e) {
+            System.out.println("Error on closing input stream or output stream");
             e.printStackTrace();
         }
     }

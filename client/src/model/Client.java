@@ -4,6 +4,7 @@ import model.state.DontWantAcess;
 import model.state.State;
 
 import java.io.Serializable;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -16,7 +17,7 @@ public class Client implements Serializable {
     private SendIsAlive sendIsAlive = new SendIsAlive("10.60.95.82");
     private Server server = new Server();
     private int counter = 0;
-    private List<String> otherClientQueue = new ArrayList<>();
+    private List<Socket> otherClientQueue = new ArrayList<>();
 
     public void initProcess() {
         this.port = sendIsAlive.send(ip);
@@ -59,11 +60,11 @@ public class Client implements Serializable {
     public State getState() {
         return state;
     }
-    public List<String> getOtherClientsQueue() {
+    public List<Socket> getOtherClientsQueue() {
         return otherClientQueue;
     }
-    public void addOtherClientInQueue(String client) {
-        this.otherClientQueue.add(client);
+    public void addOtherClientInQueue(Socket conn) {
+        this.otherClientQueue.add(conn);
     }
     public int getCounter() {
         return counter;

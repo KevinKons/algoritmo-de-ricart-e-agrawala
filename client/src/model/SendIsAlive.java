@@ -31,7 +31,7 @@ public class SendIsAlive {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            CloseConnection.getInstance().close(in, out, conn);
+            CloseConnection.getInstance().closeAll(in, out, conn);
         }
         return Integer.parseInt(null);
     }

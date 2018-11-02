@@ -1,10 +1,13 @@
 import model.Client;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 public class Main {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, UnknownHostException {
         Client client = new Client();
-        client.setIp("172.19.192.1");
+        client.setIp(InetAddress.getLocalHost().getHostAddress());
         client.initProcess();
     }
 }

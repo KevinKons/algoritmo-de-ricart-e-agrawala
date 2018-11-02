@@ -19,49 +19,73 @@ public class WantAcess extends State {
         this.otherClients = otherClients;
     }
 
+    /* 1: Executa até que todos clientes respondam "ok";
+    *  2: Estabelece conexão com cliente;
+    *  3: Informa contador para se necessário, o receptor comparar tempos;
+    *  4: Recebe resposta, e em caso de "ok", remove o cliente em questão
+    *       da lista indicando que esse liberou o acesso ao recurso.
+    *  5: Coloca o cliente no próximo estado indicando que agora ele está
+    *       livre para acessar o recurso.
+    * */
     @Override
     public void nextState() {
+        BufferedReader in;
+        PrintWriter out;
+        Socket conn;
+        System.out.println("verificando se posso acessar");
+
+        //1
         while(!otherClients.isEmpty()) {
-            BufferedReader in = null;
-            PrintWriter out = null;
-            Socket conn = null;
             String[] clientInfo = otherClients.get(0).split(":");
 
             try {
+                //2
                 conn = new Socket(clientInfo[0], Integer.parseInt(clientInfo[1]));
                 out = new PrintWriter(conn.getOutputStream(), true);
+                //3
                 out.println(this.client.getCounter());
-                out.println(this.client.getIp());
-                out.println(this.client.getPort());
 
+                //4
                 in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
+                if(in.readLine().equalsIgnoreCase("ok")) {
+                    otherClients.remove(0);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+        //5
+        System.out.println("agora posso acessar");
+        this.client.setState(new Acessing(this.client));
+
     }
 
+    /* Compara contadores
+    *  1: Caso seu próprio contador seja maior, responde "ok" liberando o outro cliente para fazer o acesso ao recurso
+     *      primeiro;
+    *  2: Caso seu próprio contador seja menor, guarda a conexão do outro cliente numa lista para após fazer uso do
+    *       recurso responder "ok" liberando o outro cliente para fazer o acesso.
+    * */
     @Override
     public void respondRequest(Socket conn) {
-        BufferedReader in = null;
-        PrintWriter out = null;
+        BufferedReader in;
+        PrintWriter out;
         try {
             in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             out = new PrintWriter(conn.getOutputStream(), true);
+
             int otherCounter = Integer.parseInt(in.readLine());
             if(this.client.getCounter() >= otherCounter) {
                 out.println("ok");
+                CloseConnection.getInstance().closeAll(in, out, conn);
             } else {
-                String otherIp = in.readLine();
-                String otherPort = in.readLine();
-                this.client.addOtherClientInQueue(otherIp + ":" + otherPort);
-                out.println("wait");
+                this.client.addOtherClientInQueue(conn);
+                CloseConnection.getInstance().closeInAndOut(in, out);
             }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            CloseConnection.getInstance().close(in, out, conn);
+
         }
     }
 }
