@@ -16,8 +16,8 @@ public class Client implements Serializable {
     private State state = new DontWantAcess(this);
     private SendIsAlive sendIsAlive = new SendIsAlive("10.60.95.82");
     private Server server = new Server();
-    private int counter = 0;
-    private List<Socket> otherClientQueue = new ArrayList<>();
+    private int counter = 10;
+    private List<Object[]> otherClientQueue = new ArrayList<>();
 
     public void initProcess() {
         this.port = sendIsAlive.send(ip);
@@ -30,14 +30,14 @@ public class Client implements Serializable {
     private void runProcess() {
         Random random = new Random();
         while(counter <= 20) {
-            try {
-                Thread.sleep((random.nextInt(15) + 31) * 1000); //simulating operation
+//            try {
+//                Thread.sleep((random.nextInt(15) + 31) * 1000); //simulating operation
                 this.state.nextState();
                 this.state.nextState();
 
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
         }
     }
 
@@ -60,11 +60,11 @@ public class Client implements Serializable {
     public State getState() {
         return state;
     }
-    public List<Socket> getOtherClientsQueue() {
+    public List<Object[]> getOtherClientsQueue() {
         return otherClientQueue;
     }
-    public void addOtherClientInQueue(Socket conn) {
-        this.otherClientQueue.add(conn);
+    public void addOtherClientInQueue(Object[] connAndOut) {
+        this.otherClientQueue.add(connAndOut);
     }
     public int getCounter() {
         return counter;

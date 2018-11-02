@@ -28,13 +28,4 @@ public class CloseConnection {
     }
 
 
-    public void closeInAndOut(Reader in, Writer out) {
-        try {
-            if (in != null) in.close();
-            if (out != null) out.close();
-        } catch (IOException e) {
-            System.out.println("Error on closing input stream or output stream");
-            e.printStackTrace();
-        }
-    }
 }

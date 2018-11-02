@@ -32,7 +32,6 @@ public class WantAcess extends State {
         BufferedReader in;
         PrintWriter out;
         Socket conn;
-        System.out.println("verificando se posso acessar");
 
         //1
         while(!otherClients.isEmpty()) {
@@ -47,7 +46,8 @@ public class WantAcess extends State {
 
                 //4
                 in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                if(in.readLine().equalsIgnoreCase("ok")) {
+                String response = in.readLine();
+                if(response.equalsIgnoreCase("ok")) {
                     otherClients.remove(0);
                 }
             } catch (IOException e) {
@@ -55,7 +55,6 @@ public class WantAcess extends State {
             }
         }
         //5
-        System.out.println("agora posso acessar");
         this.client.setState(new Acessing(this.client));
 
     }
@@ -63,8 +62,9 @@ public class WantAcess extends State {
     /* Compara contadores
     *  1: Caso seu próprio contador seja maior, responde "ok" liberando o outro cliente para fazer o acesso ao recurso
      *      primeiro;
-    *  2: Caso seu próprio contador seja menor, guarda a conexão do outro cliente numa lista para após fazer uso do
-    *       recurso responder "ok" liberando o outro cliente para fazer o acesso.
+    *  2: Caso seu próprio contador seja menor, guarda a conexão e o PrintWriterdo outro cliente numa lista para após
+     *      fazer uso do recurso responder "ok" liberando o outro cliente para fazer o acesso.
+    *
     * */
     @Override
     public void respondRequest(Socket conn) {
@@ -79,8 +79,16 @@ public class WantAcess extends State {
                 out.println("ok");
                 CloseConnection.getInstance().closeAll(in, out, conn);
             } else {
-                this.client.addOtherClientInQueue(conn);
-                CloseConnection.getInstance().closeInAndOut(in, out);
+                Object[] connAndOut = new Object[2];
+                connAndOut[0] = conn;
+                connAndOut[1] = out;
+                this.client.addOtherClientInQueue(connAndOut);
+                try {
+                    if (in != null) in.close();
+                } catch (IOException e) {
+                    System.out.println("Error on closing input stream");
+                    e.printStackTrace();
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();

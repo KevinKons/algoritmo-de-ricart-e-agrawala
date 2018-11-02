@@ -22,20 +22,20 @@ public class Acessing extends State {
 
     @Override
     public void respondRequest(Socket conn) {
-        BufferedReader in = null;
-        PrintWriter out = null;
-        try {
-            in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            out = new PrintWriter(conn.getOutputStream(), true);
-            in.readLine();
-            String otherIp = in.readLine();
-            String otherPort = in.readLine();
-            this.client.addOtherClientInQueue(otherIp + ":" + otherPort);
-            out.println("wait");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            CloseConnection.getInstance().closeAll(in, out, conn);
-        }
+//        BufferedReader in = null;
+//        PrintWriter out = null;
+//        try {
+//            in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+//            out = new PrintWriter(conn.getOutputStream(), true);
+//            in.readLine();
+//            String otherIp = in.readLine();
+//            String otherPort = in.readLine();
+//            this.client.addOtherClientInQueue(otherIp + ":" + otherPort);
+//            out.println("wait");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } finally {
+//            CloseConnection.getInstance().closeAll(in, out, conn);
+//        }
     }
 }

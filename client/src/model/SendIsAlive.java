@@ -1,6 +1,7 @@
 package model;
 
 import utils.CloseConnection;
+import utils.ServerInfo;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,7 +22,7 @@ public class SendIsAlive {
         PrintWriter out = null;
         BufferedReader in = null;
         try {
-            conn = new Socket(serverIp, 56000);
+            conn = new Socket(ServerInfo.serverIp, ServerInfo.serverPort);
             out = new PrintWriter(conn.getOutputStream(), true);
             out.println("1");
             out.println(myIp);
