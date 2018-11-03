@@ -1,17 +1,12 @@
-import controller.CommandInvoker;
 import model.Server;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.UnknownHostException;
 
 public class Main {
 
-    public static void main(String[] args) throws UnknownHostException {
+    public static void main(String[] args)  {
         int port = 56000;
-        Server server = null;
+        Server server;
         try {
             server = new Server(port);
             server.startServer();

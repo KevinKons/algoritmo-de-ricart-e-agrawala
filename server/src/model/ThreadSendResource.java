@@ -20,6 +20,7 @@ public class ThreadSendResource extends Thread {
     @Override
     public void run() {
         PrintWriter out = null;
+        System.out.println(conn.getInetAddress() + ":" + conn.getLocalPort() +" acessou");
         try {
             out = new PrintWriter(conn.getOutputStream(), true);
             String[] resourceLines = Resource.getInstance().getResource().split("\n");

@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class DontWantAcess extends State {
 
@@ -36,11 +37,9 @@ public class DontWantAcess extends State {
             out.println("2");
             //3
             in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String line;
             List<String> otherClients = new ArrayList<>();
-            while((line = in.readLine()) != null) {
-                otherClients.add(line);
-            }
+            Stream<String> lines = in.lines();
+            lines.forEach(line -> otherClients.add(line));
             //4
             this.client.setState(new WantAcess(this.client, otherClients));
         } catch (IOException e) {
