@@ -24,6 +24,8 @@ public class CommandInvoker {
     private CommandInvoker() {
         commands.put(1, new HandleKeepAlive());
         commands.put(2, new ReturnAlives());
+        commands.put(3, new SendResource());
+        commands.put(4, new ReceiveResource());
     }
 
     public void execute(Socket conn) {

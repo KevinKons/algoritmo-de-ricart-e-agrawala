@@ -46,8 +46,13 @@ public class DontWantAcess extends State {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            CloseConnection.getInstance().closeAll(in, out, conn);
+            CloseConnection.getInstance().close(in, out, conn);
         }
+    }
+
+    @Override
+    public void nextState(String resource) {
+        throw new UnsupportedOperationException("You do not have the permission to send the resource in this state");
     }
 
     /*
@@ -63,5 +68,10 @@ public class DontWantAcess extends State {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public String getResource() {
+        throw new UnsupportedOperationException("You do not have the permission to access the resource in this state");
     }
 }

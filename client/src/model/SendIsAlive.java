@@ -11,12 +11,6 @@ import java.net.Socket;
 
 public class SendIsAlive {
 
-    private String serverIp;
-
-    public SendIsAlive(String serverIp) {
-        this.serverIp = serverIp;
-    }
-
     public int send(String myIp) {
         Socket conn = null;
         PrintWriter out = null;
@@ -32,7 +26,7 @@ public class SendIsAlive {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            CloseConnection.getInstance().closeAll(in, out, conn);
+            CloseConnection.getInstance().close(in, out, conn);
         }
         return Integer.parseInt(null);
     }

@@ -13,5 +13,7 @@ public abstract class State {
     }
 
     public abstract void nextState();
+    public abstract void nextState(String resource);
     public abstract void respondRequest(Socket conn);
+    public abstract String getResource();
 }

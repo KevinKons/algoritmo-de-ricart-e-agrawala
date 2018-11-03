@@ -7,12 +7,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class ThreadReturnAlives extends Thread {
+public class ThreadSendResource extends Thread {
 
-    private final Socket conn;
     private final BufferedReader in;
+    private final Socket conn;
 
-    public ThreadReturnAlives(Socket conn, BufferedReader in) {
+    public ThreadSendResource(Socket conn, BufferedReader in) {
         this.conn = conn;
         this.in = in;
     }
@@ -22,8 +22,9 @@ public class ThreadReturnAlives extends Thread {
         PrintWriter out = null;
         try {
             out = new PrintWriter(conn.getOutputStream(), true);
-            for(Client c : ClientList.getInstance().getClients()) {
-                out.println(c.getIp() + ":" + c.getPort());
+            String[] resourceLines = Resource.getInstance().getResource().split("\n");
+            for(String resourceLine : resourceLines) {
+                out.println(resourceLine);
             }
         } catch (IOException e) {
             e.printStackTrace();

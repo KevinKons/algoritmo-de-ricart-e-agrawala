@@ -59,10 +59,15 @@ public class WantAcess extends State {
 
     }
 
+    @Override
+    public void nextState(String resource) {
+        throw new UnsupportedOperationException("You do not have the permission to send the resource in this state");
+    }
+
     /* Compara contadores
     *  1: Caso seu próprio contador seja maior, responde "ok" liberando o outro cliente para fazer o acesso ao recurso
      *      primeiro;
-    *  2: Caso seu próprio contador seja menor, guarda a conexão e o PrintWriterdo outro cliente numa lista para após
+    *  2: Caso seu próprio contador seja menor, guarda a conexão e o PrintWriter do outro cliente numa lista para após
      *      fazer uso do recurso responder "ok" liberando o outro cliente para fazer o acesso.
     *
     * */
@@ -77,7 +82,7 @@ public class WantAcess extends State {
             int otherCounter = Integer.parseInt(in.readLine());
             if(this.client.getCounter() >= otherCounter) {
                 out.println("ok");
-                CloseConnection.getInstance().closeAll(in, out, conn);
+                CloseConnection.getInstance().close(in, out, conn);
             } else {
                 Object[] connAndOut = new Object[2];
                 connAndOut[0] = conn;
@@ -95,5 +100,10 @@ public class WantAcess extends State {
         } finally {
 
         }
+    }
+
+    @Override
+    public String getResource() {
+        throw new UnsupportedOperationException("You do not have the permission to access the resource in this state");
     }
 }

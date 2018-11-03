@@ -1,7 +1,6 @@
-package utils;
+package util;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.net.Socket;
@@ -28,12 +27,13 @@ public class CloseConnection {
         }
     }
 
-    public void closeOutAndConn(PrintWriter out, Socket conn) {
+
+    public void closeInAndConn(Reader in, Socket conn) {
         try {
-            if (out != null) out.close();
+            if (in != null) in.close();
             if (conn != null) conn.close();
         } catch (IOException e) {
-            System.out.println("Error on closing output stream or socket");
+            System.out.println("Error on closing input stream or socket");
             e.printStackTrace();
         }
     }
