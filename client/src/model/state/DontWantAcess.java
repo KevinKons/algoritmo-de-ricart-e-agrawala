@@ -31,7 +31,8 @@ public class DontWantAcess extends State {
         BufferedReader in = null;
         try {
             //1
-            conn = new Socket(ServerInfo.serverIp, ServerInfo.serverPort);
+            ServerInfo serverInfo = ServerInfo.getInstance();
+            conn = new Socket(serverInfo.getServerIp(), serverInfo.getServerPort());
             out = new PrintWriter(conn.getOutputStream(), true);
             //2
             out.println("2");

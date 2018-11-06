@@ -16,7 +16,8 @@ public class SendIsAlive {
         PrintWriter out = null;
         BufferedReader in = null;
         try {
-            conn = new Socket(ServerInfo.serverIp, ServerInfo.serverPort);
+            ServerInfo serverInfo = ServerInfo.getInstance();
+            conn = new Socket(serverInfo.getServerIp(), serverInfo.getServerPort());
             out = new PrintWriter(conn.getOutputStream(), true);
             out.println("1");
             out.println(myIp);

@@ -12,6 +12,8 @@ import java.net.Socket;
 
 public class Acessing extends State {
 
+    private ServerInfo serverInfo = ServerInfo.getInstance();
+
     public Acessing(Client client) {
         super(client);
     }
@@ -26,7 +28,7 @@ public class Acessing extends State {
         Socket conn = null;
         PrintWriter out = null;
         try {
-            conn = new Socket(ServerInfo.serverIp, ServerInfo.serverPort);
+            conn = new Socket(serverInfo.getServerIp(), serverInfo.getServerPort());
             out = new PrintWriter(conn.getOutputStream(), true);
             out.println("4");
 
@@ -75,7 +77,7 @@ public class Acessing extends State {
         PrintWriter out = null;
         BufferedReader in = null;
         try {
-            conn = new Socket(ServerInfo.serverIp, ServerInfo.serverPort);
+            conn = new Socket(serverInfo.getServerIp(), serverInfo.getServerPort());
             out = new PrintWriter(conn.getOutputStream(), true);
             out.println("3");
 
